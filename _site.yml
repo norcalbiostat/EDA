@@ -1,0 +1,15 @@
+name: "Baseball EDA"
+output_dir: "."
+navbar:
+  title: "Welcome"
+  type: inverse
+  left:
+    - text: "Home"
+      href: index.html
+#    - text: "Processing"
+#      href: processing.html
+#    - text: "Analysis"
+#      href: analysis.html
+#    - text: "Contact"
+#      href: contact.html
+      

@@ -1,0 +1,28 @@
+---
+title: "Baseball EDA"
+---
+
+Project collaborators: Matthew Sterkel, Mitch Borgert, and William Zamora.
+
+Overseen by: Dr. Robin Donatello
+
+----
+
+This site is an exploratory data analysis of baseball data. 
+
+Data used in this analysis can be found at [Lahman's Baseball Database](http://www.seanlahman.com/baseball-archive/statistics/) 
+
+----
+
+On this project site we investigate the following three questions:
+
+(1.) During the steroid era of baseball (roughly 1988-2003), we are interested in if the hitters actually gain an advantage by being on steroids because the pitchers were also on steroids. There is a focus on looking for trends in OPS vs. ERA.
+
+
+(2.) The amount of money a team has and its effect of number of team's wins? We look chiefly at seasons after the year 1961 because the number of games are the same per season (162 games).  
+
+
+(3.) Does birthplace/race effect player salary? This is aimed at looking for relationships between players salaries in relationship to birthplace and race.
+
+
+The purpose of our research is to examine how steroids effected baseball during the steroid era. More specifically, we want to see if hitters did not actually gain an advantage by being on steroids because the pitchers were also on steroids. We will do this by comparing the OPS of the hitters with the ERA of the pitchers. The OPS is the sum of a statistic of how often a hitter reaches base and a statistic that measures the batting productivity of a hitter. The ERA is the mean of the earned runs given up by a pitcher. By looking at these statistics for players before and after the steroid era, we can see wether hitters did not acutally gain an advantage. 
