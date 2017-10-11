@@ -11,7 +11,7 @@
 
 
 
-<title>Baseball EDA</title>
+<title>Analysis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -199,22 +199,44 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Baseball EDA</h1>
+<h1 class="title toc-ignore">Analysis</h1>
 
 </div>
 
 
-<p>Project collaborators: Matthew Sterkel, Mitch Borgert, and William Zamora.</p>
-<p>Overseen by: Dr. Robin Donatello</p>
-<hr />
-<p>This site is an exploratory data analysis of baseball data.</p>
-<p>Data used in this analysis can be found at <a href="http://www.seanlahman.com/baseball-archive/statistics/">Lahman’s Baseball Database</a></p>
-<hr />
-<p>On this project site we investigate the following three questions:</p>
-<p>(1.) During the steroid era of baseball (roughly 1988-2003), we are interested in if the hitters actually gain an advantage by being on steroids because the pitchers were also on steroids. There is a focus on looking for trends in OPS vs. ERA.</p>
-<p>(2.) The amount of money a team has and its effect of number of team’s wins? We look chiefly at seasons after the year 1961 because the number of games are the same per season (162 games).</p>
-<p>(3.) Does birthplace/race effect player salary? This is aimed at looking for relationships between players salaries in relationship to birthplace and race.</p>
-<p>The purpose of our research is to examine how steroids effected baseball during the steroid era. More specifically, we want to see if hitters did not actually gain an advantage by being on steroids because the pitchers were also on steroids. We will do this by comparing the OPS of the hitters with the ERA of the pitchers. The OPS is the sum of a statistic of how often a hitter reaches base and a statistic that measures the batting productivity of a hitter. The ERA is the mean of the earned runs given up by a pitcher. By looking at these statistics for players before and after the steroid era, we can see wether hitters did not acutally gain an advantage.</p>
+<pre class="r"><code>#master_file&lt;-read.csv(file.choose() ,header = TRUE)
+batting&lt;-read.csv(&quot;../EDA_Data/Batting.csv&quot;,header=TRUE)
+pitching&lt;-read.csv(&quot;../EDA_Data/Pitching.csv&quot;,header=TRUE)
+
+library(tidyverse)</code></pre>
+<pre><code>## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr</code></pre>
+<pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
+<pre><code>## filter(): dplyr, stats
+## lag():    dplyr, stats</code></pre>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)</code></pre>
+<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1985) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF,) %&gt;% na.omit() %&gt;% mutate(TB = H+X2B+(2*X3B)+(3*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP)
+
+table = batting2 %&gt;% group_by(yearID) %&gt;% summarise(avgOPS = mean(OPS))</code></pre>
+<pre class="r"><code>ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point()</code></pre>
+<p><img src="analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>pitching2 = filter(pitching, pitching$yearID &gt; 1985) %&gt;% select(yearID,ERA) %&gt;% na.omit
+table2 = pitching2 %&gt;% group_by(yearID) %&gt;% summarise(avgERA = mean(ERA))</code></pre>
+<pre class="r"><code>ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()</code></pre>
+<p><img src="analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>WE can see that ERA started to go down when OPS did.</p>
+<pre class="r"><code>#str(master_file)</code></pre>
+<div id="things-to-consider-for-for-rqs-strikeouts-and-era-for-pitchers-pre-during-and-poststeriod-use..also-obp-and-batting-average-for-hitters-pre-during-and-post." class="section level1">
+<h1>Things to consider for for RQ’s: strikeouts and era for pitchers pre, during and post(steriod use)…..also obp and batting average for hitters pre, during and post.</h1>
+</div>
+<div id="steriod-use-staring-around-late-80s-and-dying-out-in-2003-yet-continuing-to-see-suspensuons-to-this-day-for-steriods." class="section level1">
+<h1>Steriod use staring around late 80’s and dying out in 2003, yet continuing to see suspensuons to this day for steriods.</h1>
+</div>
 
 
 

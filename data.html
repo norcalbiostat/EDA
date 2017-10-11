@@ -11,7 +11,7 @@
 
 
 
-<title>Baseball EDA</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -199,22 +199,117 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Baseball EDA</h1>
 
 </div>
 
 
-<p>Project collaborators: Matthew Sterkel, Mitch Borgert, and William Zamora.</p>
-<p>Overseen by: Dr. Robin Donatello</p>
-<hr />
-<p>This site is an exploratory data analysis of baseball data.</p>
-<p>Data used in this analysis can be found at <a href="http://www.seanlahman.com/baseball-archive/statistics/">Lahman’s Baseball Database</a></p>
-<hr />
-<p>On this project site we investigate the following three questions:</p>
-<p>(1.) During the steroid era of baseball (roughly 1988-2003), we are interested in if the hitters actually gain an advantage by being on steroids because the pitchers were also on steroids. There is a focus on looking for trends in OPS vs. ERA.</p>
-<p>(2.) The amount of money a team has and its effect of number of team’s wins? We look chiefly at seasons after the year 1961 because the number of games are the same per season (162 games).</p>
-<p>(3.) Does birthplace/race effect player salary? This is aimed at looking for relationships between players salaries in relationship to birthplace and race.</p>
-<p>The purpose of our research is to examine how steroids effected baseball during the steroid era. More specifically, we want to see if hitters did not actually gain an advantage by being on steroids because the pitchers were also on steroids. We will do this by comparing the OPS of the hitters with the ERA of the pitchers. The OPS is the sum of a statistic of how often a hitter reaches base and a statistic that measures the batting productivity of a hitter. The ERA is the mean of the earned runs given up by a pitcher. By looking at these statistics for players before and after the steroid era, we can see wether hitters did not acutally gain an advantage.</p>
+<div id="baseball-project" class="section level1">
+<h1>Baseball Project</h1>
+<p><a href="https://ids-f17.slack.com/messages/C79AVRG0J/convo/C79AVRG0J-1506553717.000204/">Slack discussion board</a></p>
+<div id="location-of-important-variables-that-we-will-be-using-throughout-this-project" class="section level2">
+<h2>Location of important Variables that we will be using throughout this project</h2>
+</div>
+<div id="created-variables-not-in-tables" class="section level2">
+<h2>Created Variables not in tables</h2>
+<ul>
+<li><p><strong>OPS:</strong> On base percentage plus slugging.</p></li>
+<li><p><strong>OBP</strong> On base percentage. Calculated (Hits + Walks + Hit by Pitch) / (At Bats + Walks + Hit by Pitch + Sacrifice Flies</p></li>
+<li><p><strong>SLG</strong> Slugging Calculated by total bases divided by at bats</p></li>
+</ul>
+</div>
+<div id="variables-in-all-tables-needed-to-link-with-each-other" class="section level2">
+<h2>Variables in all tables needed to link with each other</h2>
+<ul>
+<li><p><strong>PlayerID:</strong> A unique code asssigned to each player.The playerID links the data in this file with records in the other files.</p></li>
+<li><p><strong>yearID:</strong> Year</p></li>
+</ul>
+</div>
+<div id="master-player-names-dob-and-biographical-info" class="section level2">
+<h2>MASTER: Player names, DOB, and biographical info</h2>
+<ul>
+<li><p><strong>nameFirst:</strong> Player’s first name</p></li>
+<li><p><strong>nameLast:</strong> Player’s last name</p></li>
+</ul>
+</div>
+<div id="batting-table" class="section level2">
+<h2>Batting Table</h2>
+<ul>
+<li><p><strong>teamID:</strong> Team</p></li>
+<li><p><strong>G:</strong> Games</p></li>
+<li><p><strong>H:</strong> Hits</p></li>
+<li><p><strong>2B:</strong> Doubles</p></li>
+<li><p><strong>3B:</strong> Triples</p></li>
+<li><p><strong>HR:</strong> Homeruns</p></li>
+<li><p><strong>SQ:</strong> Strikeouts</p></li>
+<li><p><strong>GIDP:</strong> Grounded into double plays</p></li>
+</ul>
+</div>
+<div id="pitching-table" class="section level2">
+<h2>Pitching table</h2>
+<ul>
+<li><p><strong>teamID:</strong> Team</p></li>
+<li><p><strong>W:</strong> Wins</p></li>
+<li><p><strong>L:</strong> Losses</p></li>
+<li><p><strong>G:</strong> Games</p></li>
+<li><p><strong>H:</strong> Hits</p></li>
+<li><p><strong>HR:</strong> Homeruns</p></li>
+<li><p><strong>SO:</strong> Strikeouts</p></li>
+<li><p><strong>ERA:</strong> Earned run Average</p></li>
+<li><p><strong>SH:</strong> Sacrifices by opposing batters</p></li>
+<li><p><strong>SF:</strong> Sacrifice flies by opposing batters</p></li>
+<li><p><strong>GIDP:</strong> Grounded into double plays by opposing batter</p></li>
+</ul>
+</div>
+<div id="fielding-table" class="section level2">
+<h2>Fielding Table</h2>
+<ul>
+<li><p><strong>teamID:</strong> Team</p></li>
+<li><p><strong>G:</strong> Games</p></li>
+<li><p><strong>Dp:</strong> Double plays</p></li>
+</ul>
+</div>
+<div id="hall-of-fame-table" class="section level2">
+<h2>Hall of Fame Table</h2>
+<ul>
+<li><strong>playerID:</strong> Player ID Code</li>
+</ul>
+</div>
+<div id="pitchingpost-table" class="section level2">
+<h2>PitchingPost Table</h2>
+<ul>
+<li><p><strong>teamID:</strong> Team</p></li>
+<li><p><strong>G:</strong> Games</p></li>
+<li><p><strong>yearID:</strong> Year</p></li>
+<li><p><strong>H:</strong> Hits</p></li>
+<li><p><strong>HR:</strong> Homeruns</p></li>
+<li><p><strong>SO:</strong> Strikeouts</p></li>
+<li><p><strong>ERA:</strong> Earned run Average</p></li>
+<li><p><strong>SH:</strong> Sacrifices by opposing batters</p></li>
+<li><p><strong>SF:</strong> Sacrifice flies by opposing batters</p></li>
+<li><p><strong>GIDP:</strong> Grounded into double plays by opposing batter</p></li>
+</ul>
+</div>
+<div id="battingpost-table" class="section level2">
+<h2>BattingPost Table</h2>
+<ul>
+<li><p><strong>teamID:</strong> Team</p></li>
+<li><p><strong>G:</strong> Games</p></li>
+<li><p><strong>H:</strong> Hits</p></li>
+<li><p><strong>2B:</strong> Doubles</p></li>
+<li><p><strong>3B:</strong> Triples</p></li>
+<li><p><strong>HR:</strong> Homeruns</p></li>
+<li><p><strong>SQ:</strong> Strikeouts</p></li>
+<li><p><strong>GIDP:</strong> Grounded into double plays</p></li>
+</ul>
+</div>
+<div id="salaries-table" class="section level2">
+<h2>Salaries Table</h2>
+<ul>
+<li><p><strong>teamID:</strong> Team</p></li>
+<li><p><strong>salary:</strong> Salary</p></li>
+</ul>
+</div>
+</div>
 
 
 
