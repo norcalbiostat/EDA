@@ -3,15 +3,15 @@ title: "Analysis"
 ---
 
 
-```{r}
+```{r, Warning=FALSE}
 
-#master_file<-read.csv(file.choose() ,header = TRUE)
+
 batting<-read.csv("../EDA_Data/Batting.csv",header=TRUE)
 pitching<-read.csv("../EDA_Data/Pitching.csv",header=TRUE)
 
-library(tidyverse)
-library(dplyr)
-library(ggplot2)
+suppressMessages(library(tidyverse))
+suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
 ```
 
 ```{r}
@@ -21,7 +21,7 @@ table = batting2 %>% group_by(yearID) %>% summarise(avgOPS = mean(OPS))
 ```
 
 ```{r}
-ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point()
+ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point()+ geom_smooth()
 ```
 
 ```{r}
@@ -30,15 +30,15 @@ table2 = pitching2 %>% group_by(yearID) %>% summarise(avgERA = mean(ERA))
 ```
 
 ```{r}
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()
+ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()+geom_smooth()
 ```
 
 WE can see that ERA started to go down when OPS did. 
 
-```{r}
+```{r, include=FALSE}
 #str(master_file)
+#Things to consider for for RQ's: strikeouts and era for pitchers pre, during and post(steriod use).....also obp and batting average for hitters pre, during and post.
+#Steriod use staring around late 80's and dying out in 2003, yet continuing to see suspensions to this day for steriods.
 ```
 
 
-#Things to consider for for RQ's: strikeouts and era for pitchers pre, during and post(steriod use).....also obp and batting average for hitters pre, during and post.
-#Steriod use staring around late 80's and dying out in 2003, yet continuing to see suspensuons to this day for steriods.
