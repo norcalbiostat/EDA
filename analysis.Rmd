@@ -33,7 +33,12 @@ table2 = pitching2 %>% group_by(yearID) %>% summarise(avgERA = mean(ERA))
 ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()+geom_smooth()
 ```
 
-WE can see that ERA started to go down when OPS did. 
+The lower the ERA, the better the pitcher is considered. 
+The higher the OPS, the better the batter is considered.
+
+We can see ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.
+
+It appears that steriods did give an advantage to batters over pithers during the steriod era.
 
 ```{r, include=FALSE}
 #str(master_file)
