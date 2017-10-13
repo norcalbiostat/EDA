@@ -204,39 +204,15 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>#master_file&lt;-read.csv(file.choose() ,header = TRUE)
-batting&lt;-read.csv(&quot;../EDA_Data/Batting.csv&quot;,header=TRUE)
-pitching&lt;-read.csv(&quot;../EDA_Data/Pitching.csv&quot;,header=TRUE)
-
-library(tidyverse)</code></pre>
-<pre><code>## Loading tidyverse: ggplot2
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr</code></pre>
-<pre><code>## Conflicts with tidy packages ----------------------------------------------</code></pre>
-<pre><code>## filter(): dplyr, stats
-## lag():    dplyr, stats</code></pre>
-<pre class="r"><code>library(dplyr)
-library(ggplot2)</code></pre>
-<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1985) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF,) %&gt;% na.omit() %&gt;% mutate(TB = H+X2B+(2*X3B)+(3*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP)
-
-table = batting2 %&gt;% group_by(yearID) %&gt;% summarise(avgOPS = mean(OPS))</code></pre>
-<pre class="r"><code>ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>pitching2 = filter(pitching, pitching$yearID &gt; 1985) %&gt;% select(yearID,ERA) %&gt;% na.omit
-table2 = pitching2 %&gt;% group_by(yearID) %&gt;% summarise(avgERA = mean(ERA))</code></pre>
-<pre class="r"><code>ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()</code></pre>
+<p>We can see that average OPS increases during the 90’s and then decreases.</p>
 <p><img src="analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>WE can see that ERA started to go down when OPS did.</p>
-<pre class="r"><code>#str(master_file)</code></pre>
-<div id="things-to-consider-for-for-rqs-strikeouts-and-era-for-pitchers-pre-during-and-poststeriod-use..also-obp-and-batting-average-for-hitters-pre-during-and-post." class="section level1">
-<h1>Things to consider for for RQ’s: strikeouts and era for pitchers pre, during and post(steriod use)…..also obp and batting average for hitters pre, during and post.</h1>
-</div>
-<div id="steriod-use-staring-around-late-80s-and-dying-out-in-2003-yet-continuing-to-see-suspensuons-to-this-day-for-steriods." class="section level1">
-<h1>Steriod use staring around late 80’s and dying out in 2003, yet continuing to see suspensuons to this day for steriods.</h1>
-</div>
+<p>We can see that average ERA increaes until 2000 and the decreases.</p>
+<p><img src="analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>This graph looks very similar to the graph of ERA. This shows that OPS and ERA increased and decreased at a similar rate.</p>
+<p><img src="analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The bottom line shows that salaries were increasing quicker when OPS was increasing.</p>
 
 
 
