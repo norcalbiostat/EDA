@@ -204,38 +204,18 @@ $(document).ready(function () {
 </div>
 
 
-<<<<<<< HEAD
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>We can see that average OPS increases during the 90’s and then decreases.</p>
-<p><img src="analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We can see that average ERA increaes until 2000 and the decreases.</p>
-<p><img src="analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>This graph looks very similar to the graph of ERA. This shows that OPS and ERA increased and decreased at a similar rate.</p>
-<p><img src="analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>The bottom line shows that salaries were increasing quicker when OPS was increasing.</p>
-=======
-<pre class="r"><code>batting&lt;-read.csv(&quot;../EDA_Data/Batting.csv&quot;,header=TRUE)
-pitching&lt;-read.csv(&quot;../EDA_Data/Pitching.csv&quot;,header=TRUE)
-
-suppressMessages(library(tidyverse))
-suppressMessages(library(dplyr))
-suppressMessages(library(ggplot2))</code></pre>
-<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1985) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF,) %&gt;% na.omit() %&gt;% mutate(TB = H+X2B+(2*X3B)+(3*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP)
-
-table = batting2 %&gt;% group_by(yearID) %&gt;% summarise(avgOPS = mean(OPS))</code></pre>
-<pre class="r"><code>ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point()+ geom_smooth()</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
-<p><img src="analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>pitching2 = filter(pitching, pitching$yearID &gt; 1985) %&gt;% select(yearID,ERA) %&gt;% na.omit
-table2 = pitching2 %&gt;% group_by(yearID) %&gt;% summarise(avgERA = mean(ERA))</code></pre>
-<pre class="r"><code>ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()+geom_smooth()</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
-<p><img src="analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>The lower the ERA, the better the pitcher is considered. The higher the OPS, the better the batter is considered.</p>
 <p>We can see ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.</p>
 <p>It appears that steriods did give an advantage to batters over pithers during the steriod era.</p>
->>>>>>> da4cf1fa624ec27b20ac05357775be65691b57f1
+<p><img src="analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The bottom line shows that salaries were increasing quicker when OPS was increasing.</p>
 
 
 
