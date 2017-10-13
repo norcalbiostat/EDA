@@ -3,7 +3,6 @@ title: "Analysis"
 ---
 
 
-
 ```{r,echo=FALSE,message = FALSE, warning = FALSE}
 
 batting<-read.csv("../EDA_Data/Batting.csv",header=TRUE)
