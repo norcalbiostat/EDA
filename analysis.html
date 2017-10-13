@@ -179,9 +179,6 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="processing.html">Processing</a>
-</li>
-<li>
   <a href="analysis.html">Analysis</a>
 </li>
 <li>
@@ -204,36 +201,42 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1985) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF,) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP) %&gt;% mutate(steroidEra = !(yearID&gt;2003))
+<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1961) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP) %&gt;% 
+  mutate(steroidEra = (yearID&gt;1983 &amp; yearID&lt;2003))
 
 table = batting2 %&gt;% group_by(yearID,steroidEra) %&gt;% summarise(avgOPS = mean(OPS))
 
 ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average OPS Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average OPS&quot;)</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>We can see that average OPS increases during the 90’s and then decreases.</p>
-<pre class="r"><code>pitching2 = filter(pitching, pitching$yearID &gt; 1985) %&gt;% select(yearID,ERA) %&gt;% na.omit %&gt;% mutate(steroidEra = !(yearID&gt;2003))
+<div id="we-can-see-that-average-ops-increases-steadily-during-the-60s-and-70s-increasing-moderately-still-through-80s-plateu-around-2000-then-decreases-steadily-after." class="section level3">
+<h3>We can see that average OPS increases steadily during the 60’s and 70’s, increasing moderately still through 80’s, plateu around 2000, then decreases steadily after.</h3>
+<hr />
+<pre class="r"><code>pitching2 = filter(pitching, pitching$yearID &gt; 1961)%&gt;%
+  select(yearID,ERA) %&gt;% na.omit %&gt;%
+  mutate(steroidEra = (yearID&gt;1983 &amp; yearID&lt;2003))
 table2 = pitching2 %&gt;% group_by(yearID,steroidEra) %&gt;% summarise(avgERA = mean(ERA))
 ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average ERA Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average ERA&quot;)  + labs(fill = &quot;Steroid Era&quot;)</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>We can see that average ERA increaes until 2000 and the decreases.</p>
-<p>The lower the ERA, the better the pitcher is considered. The higher the OPS, the better the batter is considered.</p>
-<p>We can see ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.</p>
-<p>It appears that steriods did give an advantage to batters over pithers during the steriod era.</p>
-<pre class="r"><code>batsal = left_join(batting,salaries, by=&quot;playerID&quot;)</code></pre>
-<pre><code>## Warning: Column `playerID` joining factors with different levels, coercing
-## to character vector</code></pre>
-<pre class="r"><code>batsal2 = filter(batsal, batsal$yearID.x &gt; 1985) %&gt;% select(yearID.x,H,X2B,X3B,HR,AB,BB,HBP,SF,salary,teamID.x) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP)
+</div>
+<div id="we-can-see-that-average-era-decreases-until-the-1980s-then-increases-drasticly-up-till-the-early-2000s-then-begins-a-steady-decrease." class="section level3">
+<h3>We can see that average ERA decreases until the 1980’s, then increases drasticly up till the early 2000’s, then begins a steady decrease.</h3>
+<hr />
+<p><em><strong>From the 60’s up till the steriod era, we see an increase in average OPS and decrease in average ERA, signifying that preformance was increasing for both pitchers and hitters.</strong></em></p>
+<p><em><strong>During the steriod era, ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.</strong></em></p>
+<p><em><strong>It appears that steriods did give an advantage to batters over pithers during the steriod era.</strong></em></p>
+<hr />
+<pre class="r"><code>batsal = left_join(batting,salaries, by=&quot;playerID&quot;)
+batsal2 = filter(batsal, batsal$yearID.x &gt; 1985) %&gt;% select(yearID.x,H,X2B,X3B,HR,AB,BB,HBP,SF,salary,teamID.x) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP)
 
 table4 = batsal2 %&gt;% group_by(yearID.x) %&gt;% summarise(avgOPS = mean(OPS), meansalprop=mean(salary)/10000000)
 
 
 ggplot() + geom_smooth(data=table4, aes(x=yearID.x,y=avgOPS),se=FALSE) + geom_smooth(data=table4, aes(x=yearID.x,y=meansalprop),se=FALSE) + xlab(&quot;Year&quot;) + ylab(&quot;AverageOPS, Salary&quot;)</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39;
-## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>The bottom line shows that salaries were increasing quicker when OPS was increasing.</p>
+</div>
+<div id="the-bottom-line-shows-that-salaries-were-increasing-quicker-when-ops-was-increasing." class="section level3">
+<h3>The bottom line shows that salaries were increasing quicker when OPS was increasing.</h3>
+</div>
 
 
 

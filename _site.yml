@@ -6,8 +6,6 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Processing"
-      href: processing.html
     - text: "Analysis"
       href: analysis.html
     - text: "Contact"
