@@ -3,35 +3,40 @@ title: "Analysis"
 ---
 
 
-```{r, Warning=FALSE}
-
+```{r,echo=FALSE,message = FALSE, warning = FALSE}
 
 batting<-read.csv("../EDA_Data/Batting.csv",header=TRUE)
 pitching<-read.csv("../EDA_Data/Pitching.csv",header=TRUE)
+salaries<-read.csv("../EDA_Data/Salaries.csv",header=TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 suppressMessages(library(tidyverse))
 suppressMessages(library(dplyr))
 suppressMessages(library(ggplot2))
+
 ```
 
 ```{r}
-batting2 = filter(batting, batting$yearID > 1985) %>% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF,) %>% na.omit() %>% mutate(TB = H+X2B+(2*X3B)+(3*HR)) %>% mutate(SLG = TB/AB) %>% na.omit() %>% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %>% mutate(OPS = SLG + OBP)
+batting2 = filter(batting, batting$yearID > 1985) %>% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF,) %>% na.omit() %>% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %>% mutate(SLG = TB/AB) %>% na.omit() %>% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %>% mutate(OPS = SLG + OBP) %>% mutate(steroidEra = !(yearID>2003))
 
-table = batting2 %>% group_by(yearID) %>% summarise(avgOPS = mean(OPS))
+table = batting2 %>% group_by(yearID,steroidEra) %>% summarise(avgOPS = mean(OPS))
+
+ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("Average OPS")
 ```
 
-```{r}
-ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point()+ geom_smooth()
-```
-
-```{r}
-pitching2 = filter(pitching, pitching$yearID > 1985) %>% select(yearID,ERA) %>% na.omit
-table2 = pitching2 %>% group_by(yearID) %>% summarise(avgERA = mean(ERA))
-```
+We can see that average OPS increases during the 90's and then decreases. 
 
 ```{r}
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point()+geom_smooth()
+pitching2 = filter(pitching, pitching$yearID > 1985) %>% select(yearID,ERA) %>% na.omit %>% mutate(steroidEra = !(yearID>2003))
+table2 = pitching2 %>% group_by(yearID,steroidEra) %>% summarise(avgERA = mean(ERA))
+ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA")  + labs(fill = "Steroid Era")
+
 ```
+
+We can see that average ERA increaes until 2000 and the decreases.
 
 The lower the ERA, the better the pitcher is considered. 
 The higher the OPS, the better the batter is considered.
@@ -40,10 +45,26 @@ We can see ERA increase when OPS did, and then both begin to decrease around the
 
 It appears that steriods did give an advantage to batters over pithers during the steriod era.
 
+```{r}
+batsal = left_join(batting,salaries, by="playerID")
+batsal2 = filter(batsal, batsal$yearID.x > 1985) %>% select(yearID.x,H,X2B,X3B,HR,AB,BB,HBP,SF,salary,teamID.x) %>% na.omit() %>% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %>% mutate(SLG = TB/AB) %>% na.omit() %>% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %>% mutate(OPS = SLG + OBP)
+
+table4 = batsal2 %>% group_by(yearID.x) %>% summarise(avgOPS = mean(OPS), meansalprop=mean(salary)/10000000)
+
+
+ggplot() + geom_smooth(data=table4, aes(x=yearID.x,y=avgOPS),se=FALSE) + geom_smooth(data=table4, aes(x=yearID.x,y=meansalprop),se=FALSE) + xlab("Year") + ylab("AverageOPS, Salary")
+
+```
+
+The bottom line shows that salaries were increasing quicker when OPS was increasing.
+
+
 ```{r, include=FALSE}
 #str(master_file)
 #Things to consider for for RQ's: strikeouts and era for pitchers pre, during and post(steriod use).....also obp and batting average for hitters pre, during and post.
 #Steriod use staring around late 80's and dying out in 2003, yet continuing to see suspensions to this day for steriods.
 ```
+
+
 
 
