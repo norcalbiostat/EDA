@@ -3,7 +3,7 @@ title: "Analysis"
 ---
 
 
-<<<<<<< HEAD
+
 ```{r,echo=FALSE,message = FALSE, warning = FALSE}
 
 batting<-read.csv("../EDA_Data/Batting.csv",header=TRUE)
@@ -23,7 +23,7 @@ batting2 = filter(batting, batting$yearID > 1985) %>% select(yearID,H,X2B,X3B,HR
 table = batting2 %>% group_by(yearID) %>% summarise(avgOPS = mean(OPS))
 ```
 
-<<<<<<< HEAD
+
 ```{r,echo=FALSE}
 ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point() + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time")
 
