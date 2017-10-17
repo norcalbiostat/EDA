@@ -224,9 +224,12 @@ $(document).ready(function () {
 <div id="we-can-see-that-average-era-decreases-until-the-1980s-then-increases-drasticly-up-till-the-early-2000s-then-begins-a-steady-decrease." class="section level3">
 <h3>We can see that average ERA decreases until the 1980’s, then increases drasticly up till the early 2000’s, then begins a steady decrease.</h3>
 <hr />
-<p><em><strong>From the 60’s up till the steriod era, we see an increase in average OPS and decrease in average ERA, signifying that preformance was increasing for both pitchers and hitters.</strong></em></p>
+</div>
+<div id="drawing-conclusions" class="section level3">
+<h3>Drawing Conclusions:</h3>
+<p><em><strong>From the 60’s up till the steroid era, we see an increase in average OPS and decrease in average ERA, signifying that preformance was increasing for both pitchers and hitters.</strong></em></p>
 <p><em><strong>During the steriod era, ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.</strong></em></p>
-<p><em><strong>It appears that steriods did give an advantage to batters over pithers during the steriod era.</strong></em></p>
+<p><em><strong>It appears that steriods did give an advantage to batters over pithers during the steroid era.</strong></em></p>
 <hr />
 <pre class="r"><code>batsal = left_join(batting,salaries, by=&quot;playerID&quot;)
 batsal2 = filter(batsal, batsal$yearID.x &gt; 1985) %&gt;% select(yearID.x,H,X2B,X3B,HR,AB,BB,HBP,SF,salary,teamID.x) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP)
