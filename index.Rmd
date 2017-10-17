@@ -16,7 +16,7 @@ Data used in this analysis can be found at [Lahman's Baseball Database](http://w
 
 On this project site we investigate the following question:
 
- During the steroid era of baseball (roughly 1988-2003), we want to see if hitters did not actually gain an advantage by being on steroids because the pitchers were also on steroids. We will do this by comparing the OPS of the hitters with the ERA of the pitchers. The OPS is the sum of a statistic of how often a hitter reaches base and a statistic that measures the batting productivity of a hitter. The ERA is the mean of the earned runs given up by a pitcher. By looking at these statistics for players before and after the steroid era, we can see whether hitters did not actually gain an advantage. 
+ During the steroid era of baseball (roughly 1988-2003), we want to see if hitters did not actually gain an advantage by being on steroids because the pitchers were also on steroids. We will do this by comparing the on-base plus sluging (OPS) of the hitters with the earned run averge (ERA) of the pitchers. The OPS is the sum of a statistic of how often a hitter reaches base and a statistic that measures the batting productivity of a hitter. The ERA is the mean of the earned runs given up by a pitcher. By looking at these statistics for players before and after the steroid era, we can see whether hitters did not actually gain an advantage. 
  
 It is important to note that:
 
