@@ -28,7 +28,15 @@ batting2 = filter(batting, batting$yearID > 1961) %>% select(yearID,H,X2B,X3B,HR
 
 table = batting2 %>% group_by(yearID,steroidEra) %>% summarise(avgOPS = mean(OPS))
 
-ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("Average OPS")
+ggplot(table, aes(x =yearID, y = avgOPS)) + 
+  geom_point(aes(col=steroidEra)) +
+  geom_smooth(se=FALSE) +
+  ggtitle("Average OPS Over Time") + 
+  xlab("Year") + 
+  ylab("Average OPS") +
+  ylim(.55,.67) +
+  scale_color_manual(name="Era", labels= c("Non-SteroidEra", "Steroid-Era"), values = c("green","red")) +
+  theme_bw()
 ```
 
 ### We can see that average OPS increases steadily during the 60's and 70's, increasing moderately still through 80's, plateu around 2000,  then decreases steadily after. 
@@ -39,21 +47,31 @@ ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS
 pitching2 = filter(pitching, pitching$yearID > 1961)%>%
   select(yearID,ERA) %>% na.omit %>%
   mutate(steroidEra = (yearID>1983 & yearID<2003))
-table2 = pitching2 %>% group_by(yearID,steroidEra) %>% summarise(avgERA = mean(ERA))
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA")  + labs(fill = "Steroid Era")
+  table2 = pitching2 %>% group_by(yearID,steroidEra) %>% summarise(avgERA = mean(ERA))
+  
+ggplot(table2, aes(x =yearID, y = avgERA)) + 
+  geom_point(aes(col=steroidEra)) + 
+  geom_smooth(se=FALSE) + 
+  ggtitle("Average ERA Over Time") +  
+  xlab("Year") +
+  ylab("Average ERA") +
+  ylim(4,6.4) +
+  scale_color_manual(name="Era", labels= c("Non-SteroidEra", "Steroid-Era"), values = c("green","red")) +
+  theme_bw()
+  
 
 ```
 
-###We can see that average ERA decreases until the 1980's, then increases drasticly up till the early 2000's, then begins a steady decrease.
+###We can see that average ERA decreases until the 1980's, then increases drastically up till the early 2000's, then begins a steady decrease.
 
 ----
 
-*__From the 60's up till the steriod era, we see an increase in average OPS and decrease in average ERA, signifying that preformance was increasing for both pitchers and hitters.__* 
+*__From the 60's up till the steroid era, we see an increase in average OPS and decrease in average ERA, signifying that preformance was increasing for both pitchers and hitters.__* 
 
 
-*__During the steriod era, ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.__*
+*__During the steroid era, ERA increase when OPS did, and then both begin to decrease around the end of the steroid era.__*
 
-*__It appears that steriods did give an advantage to batters over pithers during the steriod era.__*
+*__It appears that steroids did give an advantage to batters over pitchers during the steroid era.__*
 
 ----
 
@@ -64,7 +82,12 @@ batsal2 = filter(batsal, batsal$yearID.x > 1985) %>% select(yearID.x,H,X2B,X3B,H
 table4 = batsal2 %>% group_by(yearID.x) %>% summarise(avgOPS = mean(OPS), meansalprop=mean(salary)/10000000)
 
 
-ggplot() + geom_smooth(data=table4, aes(x=yearID.x,y=avgOPS),se=FALSE) + geom_smooth(data=table4, aes(x=yearID.x,y=meansalprop),se=FALSE) + xlab("Year") + ylab("AverageOPS, Salary")
+ggplot() + 
+  geom_smooth(data=table4, aes(x=yearID.x,y=avgOPS),se=FALSE) + 
+  geom_smooth(data=table4, aes(x=yearID.x,y=meansalprop),se=FALSE) + 
+  xlab("Year") + 
+  ylab("AverageOPS, Salary") +
+  theme_bw()
 
 ```
 
@@ -73,8 +96,8 @@ ggplot() + geom_smooth(data=table4, aes(x=yearID.x,y=avgOPS),se=FALSE) + geom_sm
 
 ```{r, include=FALSE}
 #str(master_file)
-#Things to consider for for RQ's: strikeouts and era for pitchers pre, during and post(steriod use).....also obp and batting average for hitters pre, during and post.
-#Steriod use staring around late 80's and dying out in 2003, yet continuing to see suspensions to this day for steriods.
+#Things to consider for for RQ's: strikeouts and era for pitchers pre, during and post(steroid use).....also obp and batting average for hitters pre, during and post.
+#Steroid use staring around late 80's and dying out in 2003, yet continuing to see suspensions to this day for steroids.
 ```
 
 
