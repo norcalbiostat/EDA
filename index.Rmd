@@ -6,13 +6,10 @@ _Project collaborators: Matthew Sterkel, Mitch Borgert, and William Zamora._
 
 _Overseen by: Dr. Robin Donatello_
 
-----
 
 This site is an exploratory data analysis of baseball data. 
 
 Data used in this analysis can be found at [Lahman's Baseball Database](http://www.seanlahman.com/baseball-archive/statistics/) 
-
-
 
 On this project site we investigate the following question:
 
