@@ -40,7 +40,7 @@ Next, creating a table with variables denotating: specific year, specifying if y
 
 
 ```{r}
-ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("Average OPS")
+ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("Average OPS") + scale_color_discrete(name='Steroid Era') + theme_minimal()
 ```
 
 ### We can see that average OPS increases steadily during the 60's and 70's, increasing moderately still through 80's, plateu around 2000,  then decreases steadily after. 
@@ -58,17 +58,11 @@ Using filter function on the pitching data to get years from 1961 to current. Th
 
 ```{r}
 table2 = pitching2 %>% group_by(yearID,steroidEra) %>% summarise(avgERA = mean(ERA))
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA")  
+ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA") + scale_color_discrete(name='Steroid Era') + theme_minimal()
 
 ```
 
 Again, creating a table but with variables denoting: specific year, specifying if year is in steroid era (or not), and average ERA.
-
-
-```{r}
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA")  + labs(fill = "Steroid Era")
-```
-
 
 ###We can see that average ERA decreases until the 1980's, then increases drasticly up till the early 2000's, then begins a steady decrease.
 
@@ -81,7 +75,7 @@ ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) +
 *__It appears that steriods did give an advantage to batters over pithers during the steroid era.__*
 
 
-```{r}
+```{r, include=FALSE}
 batsal = left_join(batting,salaries, by="playerID")
 batsal2 = filter(batsal, batsal$yearID.x > 1985) %>% select(yearID.x,H,X2B,X3B,HR,AB,BB,HBP,SF,salary,teamID.x) %>% na.omit() %>% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %>% mutate(SLG = TB/AB) %>% na.omit() %>% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %>% mutate(OPS = SLG + OBP) %>% mutate(steroidEra = (yearID.x>1983 & yearID.x<2003))
 
@@ -89,7 +83,7 @@ ggplot(batsal2, aes(x =OPS, y = log(salary))) + geom_point(aes(x =OPS, y = log(s
 
 ```
 
-###The bottom line shows that salaries were increasing quicker when OPS was increasing.
+
 
 
 ```{r, include=FALSE}
