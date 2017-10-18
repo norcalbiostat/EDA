@@ -22,8 +22,7 @@ suppressMessages(library(ggplot2))
 ```
 
 ```{r}
-batting2 = filter(batting, batting$yearID > 1961) %>% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF) %>% na.omit() %>% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %>% mutate(SLG = TB/AB) %>% na.omit() %>% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %>% mutate(OPS = SLG + OBP) %>% mutate(steroidEra = (yearID>1983 & yearID<2003))
-
+batting2 = filter(batting, batting$yearID > 1961) %>% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF) %>% na.omit() %>% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %>% mutate(SLG = TB/AB) %>% na.omit() %>% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %>% mutate(OPS = SLG + OBP) %>% mutate(steroidEra = (yearID>1983 & yearID<2003)) %>% filter(AB>160)
 ```
 
   Using the filter function from the "dplyr" package, we took our batting data and truncated it below at the year 1961, since this is the year that baseball had become today's standard of 162 games. Then using the select function we picked our desired variables, and then omitted any missing values(Na's). Lastly we used mutate to create a series of new variables which ended up producing OPS, as such 
@@ -40,7 +39,9 @@ Next, creating a table with variables denotating: specific year, specifying if y
 
 
 ```{r}
-ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("Average OPS") + scale_color_discrete(name='Steroid Era') + theme_minimal()
+ggplot(batting2, aes(x =yearID, y = OPS)) + geom_point(aes(x =yearID, y = OPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("OPS") + scale_color_discrete(name='Steroid Era') + theme_minimal() +  scale_color_manual(name= "Era",labels=c("Non-Steroid Era","Steroid Era"),values = c("green","red")) + theme_bw() 
+
+ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average OPS Over Time") + xlab("Year") + ylab("Average OPS") + scale_color_manual(name= "Era",labels=c("Non-Steroid Era","Steroid Era"),values = c("green","red")) + theme_bw() 
 ```
 
 ### We can see that average OPS increases steadily during the 60's and 70's, increasing moderately still through 80's, plateu around 2000,  then decreases steadily after. 
@@ -48,8 +49,10 @@ ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS
  
 ```{r}
 pitching2 = filter(pitching, pitching$yearID > 1961)%>%
-  select(yearID,ERA) %>% na.omit %>%
-  mutate(steroidEra = (yearID>1983 & yearID<2003))
+  select(yearID,ERA,G) %>% na.omit %>%
+  mutate(steroidEra = (yearID>1983 & yearID<2003)) %>% filter(G>15)
+
+table2 = pitching2 %>% group_by(yearID,steroidEra) %>% summarise(avgERA = mean(ERA))
 
 ```
 
@@ -57,8 +60,9 @@ Using filter function on the pitching data to get years from 1961 to current. Th
 
 
 ```{r}
-table2 = pitching2 %>% group_by(yearID,steroidEra) %>% summarise(avgERA = mean(ERA))
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA") + scale_color_discrete(name='Steroid Era') + theme_minimal()
+ggplot(pitching2, aes(x =yearID, y = ERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=TRUE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA") + scale_color_discrete(name='Steroid Era') + theme_minimal() +  scale_color_manual(name= "Era",labels=c("Non-Steroid Era","Steroid Era"),values = c("green","red")) + theme_bw() 
+
+ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle("Average ERA Over Time") + xlab("Year") + ylab("Average ERA") + scale_color_discrete(name='Steroid Era') + scale_color_manual(name= "Era",labels=c("Non-Steroid Era","Steroid Era"),values = c("green","red")) + theme_bw() 
 
 ```
 
@@ -73,6 +77,12 @@ Again, creating a table but with variables denoting: specific year, specifying i
 *__During the steriod era, ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.__*
 
 *__It appears that steriods did give an advantage to batters over pithers during the steroid era.__*
+
+
+```{r}
+opsera = left_join(table,table2, by='yearID')
+ggplot(opsera, aes(avgERA,avgOPS,col = steroidEra.x)) + geom_point() + geom_smooth(se=FALSE) +  scale_color_manual(name= "Era",labels=c("Non-Steroid Era","Steroid Era"),values = c("green","red")) + theme_bw() + xlab("Average ERA") + ylab("Average OPS")
+```
 
 
 ```{r, include=FALSE}

@@ -201,22 +201,27 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1961) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP) %&gt;% mutate(steroidEra = (yearID&gt;1983 &amp; yearID&lt;2003))</code></pre>
+<pre class="r"><code>batting2 = filter(batting, batting$yearID &gt; 1961) %&gt;% select(yearID,H,X2B,X3B,HR,AB,BB,HBP,SF) %&gt;% na.omit() %&gt;% mutate(TB = H+2*X2B+(3*X3B)+(4*HR)) %&gt;% mutate(SLG = TB/AB) %&gt;% na.omit() %&gt;% mutate(OBP = (H + BB + HBP)/(AB + BB + SF + HBP)) %&gt;% mutate(OPS = SLG + OBP) %&gt;% mutate(steroidEra = (yearID&gt;1983 &amp; yearID&lt;2003)) %&gt;% filter(AB&gt;160)</code></pre>
 <p>Using the filter function from the “dplyr” package, we took our batting data and truncated it below at the year 1961, since this is the year that baseball had become today’s standard of 162 games. Then using the select function we picked our desired variables, and then omitted any missing values(Na’s). Lastly we used mutate to create a series of new variables which ended up producing OPS, as such</p>
 <p><span class="math display">\[TB=H+2(X2B)+3(X3B)+4(HR)\]</span> <span class="math display">\[ SLG=TB/AB \]</span> <span class="math display">\[OBP=(H+BB+HBP)/(AB +BB+SF+HBP) \]</span> <span class="math display">\[OPS=SLG+OBP \]</span></p>
 <pre class="r"><code>table = batting2 %&gt;% group_by(yearID,steroidEra) %&gt;% summarise(avgOPS = mean(OPS))</code></pre>
 <p>Next, creating a table with variables denotating: specific year, specifying if year is in steroid era (or not), and average OPS.</p>
-<pre class="r"><code>ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average OPS Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average OPS&quot;) + scale_color_discrete(name=&#39;Steroid Era&#39;) + theme_minimal()</code></pre>
+<pre class="r"><code>ggplot(batting2, aes(x =yearID, y = OPS)) + geom_point(aes(x =yearID, y = OPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average OPS Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;OPS&quot;) + scale_color_discrete(name=&#39;Steroid Era&#39;) + theme_minimal() +  scale_color_manual(name= &quot;Era&quot;,labels=c(&quot;Non-Steroid Era&quot;,&quot;Steroid Era&quot;),values = c(&quot;green&quot;,&quot;red&quot;)) + theme_bw() </code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(table, aes(x =yearID, y = avgOPS)) + geom_point(aes(x =yearID, y = avgOPS ,col=steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average OPS Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average OPS&quot;) + scale_color_manual(name= &quot;Era&quot;,labels=c(&quot;Non-Steroid Era&quot;,&quot;Steroid Era&quot;),values = c(&quot;green&quot;,&quot;red&quot;)) + theme_bw() </code></pre>
+<p><img src="analysis_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 <div id="we-can-see-that-average-ops-increases-steadily-during-the-60s-and-70s-increasing-moderately-still-through-80s-plateu-around-2000-then-decreases-steadily-after." class="section level3">
 <h3>We can see that average OPS increases steadily during the 60’s and 70’s, increasing moderately still through 80’s, plateu around 2000, then decreases steadily after.</h3>
 <pre class="r"><code>pitching2 = filter(pitching, pitching$yearID &gt; 1961)%&gt;%
-  select(yearID,ERA) %&gt;% na.omit %&gt;%
-  mutate(steroidEra = (yearID&gt;1983 &amp; yearID&lt;2003))</code></pre>
+  select(yearID,ERA,G) %&gt;% na.omit %&gt;%
+  mutate(steroidEra = (yearID&gt;1983 &amp; yearID&lt;2003)) %&gt;% filter(G&gt;15)
+
+table2 = pitching2 %&gt;% group_by(yearID,steroidEra) %&gt;% summarise(avgERA = mean(ERA))</code></pre>
 <p>Using filter function on the pitching data to get years from 1961 to current. Then selecting years and ERA, and omitting Na’s. Then using mutate to specific steroid era as years 1983-2003.</p>
-<pre class="r"><code>table2 = pitching2 %&gt;% group_by(yearID,steroidEra) %&gt;% summarise(avgERA = mean(ERA))
-ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average ERA Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average ERA&quot;) + scale_color_discrete(name=&#39;Steroid Era&#39;) + theme_minimal()</code></pre>
+<pre class="r"><code>ggplot(pitching2, aes(x =yearID, y = ERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=TRUE) + ggtitle(&quot;Average ERA Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average ERA&quot;) + scale_color_discrete(name=&#39;Steroid Era&#39;) + theme_minimal() +  scale_color_manual(name= &quot;Era&quot;,labels=c(&quot;Non-Steroid Era&quot;,&quot;Steroid Era&quot;),values = c(&quot;green&quot;,&quot;red&quot;)) + theme_bw() </code></pre>
 <p><img src="analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) + geom_smooth(se=FALSE) + ggtitle(&quot;Average ERA Over Time&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Average ERA&quot;) + scale_color_discrete(name=&#39;Steroid Era&#39;) + scale_color_manual(name= &quot;Era&quot;,labels=c(&quot;Non-Steroid Era&quot;,&quot;Steroid Era&quot;),values = c(&quot;green&quot;,&quot;red&quot;)) + theme_bw() </code></pre>
+<p><img src="analysis_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
 <p>Again, creating a table but with variables denoting: specific year, specifying if year is in steroid era (or not), and average ERA.</p>
 </div>
 <div id="we-can-see-that-average-era-decreases-until-the-1980s-then-increases-drasticly-up-till-the-early-2000s-then-begins-a-steady-decrease." class="section level3">
@@ -227,6 +232,9 @@ ggplot(table2, aes(x =yearID, y = avgERA)) + geom_point(aes(col = steroidEra)) +
 <p><em><strong>From the 60’s up till the steroid era, we see an increase in average OPS and decrease in average ERA, signifying that preformance was increasing for both pitchers and hitters.</strong></em></p>
 <p><em><strong>During the steriod era, ERA increase when OPS did, and then both begin to decrease around the end of the steriod era.</strong></em></p>
 <p><em><strong>It appears that steriods did give an advantage to batters over pithers during the steroid era.</strong></em></p>
+<pre class="r"><code>opsera = left_join(table,table2, by=&#39;yearID&#39;)
+ggplot(opsera, aes(avgERA,avgOPS,col = steroidEra.x)) + geom_point() + geom_smooth(se=FALSE) +  scale_color_manual(name= &quot;Era&quot;,labels=c(&quot;Non-Steroid Era&quot;,&quot;Steroid Era&quot;),values = c(&quot;green&quot;,&quot;red&quot;)) + theme_bw() + xlab(&quot;Average ERA&quot;) + ylab(&quot;Average OPS&quot;)</code></pre>
+<p><img src="analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 
 
