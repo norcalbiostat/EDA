@@ -34,7 +34,7 @@ ggplot(table, aes(x =yearID, y = avgOPS)) +
   ggtitle("Average OPS Over Time") + 
   xlab("Year") + 
   ylab("Average OPS") +
-  ylim(.55,.67) +
+  ylim(.57,.67) +
   scale_color_manual(name="Era", labels= c("Non-SteroidEra", "Steroid-Era"), values = c("green","red")) +
   theme_bw()
 ```
